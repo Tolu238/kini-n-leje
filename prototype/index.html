@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ki ni n leje</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="app">
+
+  <!-- HOME SCREEN -->
+  <section id="view-home" class="view">
+    <div class="phone-frame home-frame">
+      <div class="top-bar">
+        <button class="icon-btn" title="Profile">👤</button>
+        <button class="icon-btn" title="Settings">⚙️</button>
+      </div>
+      <h1 class="logo">Kí ní <br>n léjè</h1>
+      <p class="tagline">Let's Play...</p>
+      <div class="home-actions">
+        <button id="btn-play" class="pill-btn play-btn">▶ Play</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- GAME SCREEN -->
+  <section id="view-game" class="view hidden">
+    <div class="phone-frame">
+      <div class="hud">
+        <div class="wood-badge">
+          <div class="ribbon">WORDS</div>
+          <div class="badge-body"><span id="hud-words" class="words-val">0<small>/00</small></span></div>
+        </div>
+        <div class="mascot" id="mascot">
+          <img class="mascot-face" src="images/mascot_griot.png" alt="Griot mascot" draggable="false">
+          <div class="mascot-mouth" id="mascot-mouth"></div>
+        </div>
+        <div class="wood-badge">
+          <div class="ribbon">SCORE</div>
+          <div class="badge-body">
+            <div class="score-pill ok"><span class="dot">✔</span><span id="hud-score">00</span></div>
+            <div class="score-pill bad"><span class="dot">✘</span><span id="hud-wrong">00</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="card" class="card">
+        <div class="clock" id="clock"><span id="hud-timer" class="hud-value">08</span></div>
+        <div class="card-word" id="card-word">Pépéyẹ</div>
+        <div class="card-reveal hidden" id="card-reveal">
+          <div class="card-english" id="card-english">Duck</div>
+          <img class="card-image" id="card-image" alt="" draggable="false">
+        </div>
+        <div id="feedback" class="feedback hidden"></div>
+      </div>
+
+      <div class="answer-row">
+        <button id="btn-false" class="pill-btn btn-iro">Iró nlá</button>
+        <button id="btn-true" class="pill-btn btn-leje">Léje léje</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESULT SCREEN -->
+  <section id="view-result" class="view hidden">
+    <div class="phone-frame result-frame">
+      <h2 id="result-title" class="result-title">Congratulations!</h2>
+      <div class="result-score">
+        <span id="result-pct">100%</span>
+      </div>
+      <p id="result-sub" class="result-sub">Score: 10/10</p>
+      <p id="result-next-question" class="result-next-question hidden">Move to the next level?</p>
+      <div class="result-actions">
+        <button id="btn-next-level" class="pill-btn next-level-btn hidden">Yes, Next Level ▸</button>
+        <button id="btn-replay" class="pill-btn replay-btn">Replay</button>
+        <button id="btn-home" class="pill-btn home-btn">Home</button>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script src="game-data.js"></script>
+<script src="game.js"></script>
+</body>
+</html>

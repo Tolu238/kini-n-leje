@@ -1,0 +1,131 @@
+Yoruba,English,Has blood,Category,Living,Complexity
+Ariwo,Noise,No,Activity,Non-Living,Not-common
+Ẹ̀rín,Laughter,No,Activity,Non-Living,Common
+Ìjàkadí,Wrestling,No,Activity,Non-Living,Rare
+Ijó,Dance,No,Activity,Non-Living,Common
+Iṣẹ́,Work,No,Activity,Non-Living,Common
+Ọdún,Festival,No,Activity,Non-Living,Not-common
+Adìyẹ,Chicken,Yes,Animal,Living,Common
+Aguntan,Sheep,yes,Animal,Living,Very-common
+Ajá,Dog,Yes,Animal,Living,Very-common
+Àkùkọ,Cockerel,Yes,Animal,Living,Rare
+Ekòló,Earthworm,No,Animal,Living,Not-common
+Ewúrẹ́,Goat,Yes,Animal,Living,Very-common
+Ìgbín,Snail,No,Animal,Living,Rare
+Ìjàpá,Tortoise,Yes,Animal,Living,Rare
+Màlúù,Cow,Yes,Animal,Living,Common
+Pẹ́pẹ́yẹ,Duck,Yes,Animal,Living,Common
+Àgbò,Ram,Yes,Animal,Living,Common
+Abíyá,Armpit,Yes,Body-part,Living,Rare
+Ahọ́n,Tongue,Yes,Body-part,Living,Common
+Apá,Arm,Yes,Body-part,Living,Common
+Àtẹ́lẹsẹ̀,Sole,Yes,Body-part,Living,Rare
+Àtẹ́lẹwọ́,Palm,Yes,Body-part,Living,Rare
+Èjìká,Shoulder,Yes,Body-part,Living,Not-common
+Etí,Ear,Yes,Body-part,Living,Common
+Eyín,Teeth,Yes,Body-part,Living,Common
+Ìdodo,Navel,Yes,Body-part,Living,Rare
+Ìgúnpá,Elbow,Yes,Body-part,Living,Rare
+Imú,Nose,Yes,Body-part,Living,Common
+Irun,Hair,No,Body-part,Non-Living,Common
+Ojú,Eye,Yes,Body-part,Living,Common
+Ojúgun,Shin,Yes,Body-part,Living,Rare
+Ọkàn,Heart,Yes,Body-part,Living,Not-common
+Ọpọlọ,Brain,Yes,Body-part,Living,Common
+Orí,Head,Yes,Body-part,Living,Very-common
+Ọrùn,Neck,Yes,Body-part,Living,Not-common
+Ọwọ́,Hand,Yes,Body-part,Living,Common
+Epo pupa,Palmoil,No,Food,Non-Living,Rare
+Ẹ̀wà,beans,No,Food,Non-Living,Very-common
+Oúnjẹ,Food,No,Food,Non-Living,
+Ìbẹ́pẹ,Pawpaw,No,Fruit,Living,Not-common
+Ọ̀gẹ̀dẹ̀ wẹ́wẹ́,Banana,No,Fruit,Living,Very-common
+Ọ̀gẹ̀dẹ̀ àgbagbà,plantain,No,Fruit,Living,Very-common
+Abọ́,plate,No,Household,Non-Living,Common
+Àwo,Dish,No,Household,Non-Living,Not-common
+Dígí,mirror,No,Household,Non-Living,Common
+Ibùsùn,bedroom,No,Household,Non-Living,Rare
+Ife,Cup,No,Household,Non-Living,Not-common
+Ijoko,chair,No,Household,Non-Living,Common
+Ilé,house,No,Household,Non-Living,Very-common
+Ilẹ̀kùn,door,No,Household,Non-Living,Common
+Ìṣasùn,Pot,No,Household,Non-Living,Not-common
+Ọ̀bẹ,Knife,No,Household,Non-Living,Common
+Ògiri,Wall,No,Household,Non-Living,Common
+Ṣíbí,Spoon,No,Household,Non-Living,Common
+Tábìlì,Table,No,Household,Non-Living,Common
+Arugbo,Old Person,Yes,Human,Living,Common
+Bàbá,Father,Yes,Human,Living,Very-common
+Ebí,Family,Yes,Human,Living,Rare
+Ìyá,Mother,Yes,Human,Living,Common
+Ìyàwó,Wife,Yes,Human,Living,Common
+Ọba,King,Yes,Human,Living,Common
+Ọkọ,Husband,Yes,Human,Living,Common
+Ọlọ́pàá,Police,Yes,Human,Living,Not-common
+Olorì,Queen,Yes,Human,Living,Not-common
+Olùkọ́,Teacher,Yes,Human,Living,Common
+Ọ̀rẹ́,Friend,Yes,Human,Living,Common
+Aáyán,Cockroach,No,Insect,Living,Common
+Aláǹtakùn,Spider,No,Insect,Living,Rare
+Eṣinṣin,Fly,No,Insect,Living,Rare
+Eèrà,Ant,No,Insect,Living,Not-common
+Kòkòrò,Insect,No,Insect,Living,Very-common
+Labalábá,Butterfly,No,Insect,Living,Not-common
+Àárọ̀,Morning,No,Nature,Non-Living,Very-common
+Àfẹ̀mọ́jú,Dawn,No,Nature,Non-Living,Rare
+Alẹ́,Night,No,Nature,Non-Living,Common
+Ẹyin,Egg,No,Nature,Non-Living,Very-common
+Igbó,Forest,No,Nature,Living,Rare
+Ìrọ̀lẹ́,Evening,No,Nature,Non-Living,Not-common
+Òjò,Rain,No,Nature,Non-Living,Common
+Omi,Water,No,Nature,Non-Living,Very-common
+Ọ̀sán,Afternoon,No,Nature,Non-Living,Common
+Ẹ̀hìnkùlé,Backyard,No,Place,Non-Living,Rare
+Ilé Ẹjọ́,Court,No,Place,Non-Living,Rare
+Ilé Iṣẹ́,Office,No,Place,Non-Living,Rare
+Ilé Ìwé,School,No,Place,Non-Living,Not-common
+Ilé Ìwòsàn,Hospital,No,Place,Non-Living,Rare
+Ilé Ọjà,Mall,No,Place,Non-Living,Rare
+Ilé Owó,Bank,No,Place,Non-Living,Rare
+Àgbàdo,Corn,No,Plant,Living,Rare
+Ẹ̀fọ́,Vegetable,No,Plant,Living,Common
+Igi,Tree,No,Plant,Living,Common
+Iṣu,yam,No,Plant,Living,Very-common
+Koríko,Grass,No,Plant,Living,Not-common
+Òdòdó,Flower,No,Plant,Living,Common
+Ìjì,Storm,no,Solar-system,Non-Living,Rare
+Ìràwọ̀,Star,No,Solar-system,Non-Living,Not-common
+Òfurufú,Sky,No,Solar-system,Non-Living,Not-common
+Oòrùn,Sun,No,Solar-system,Non-Living,Rare
+Òṣùpá,Moon,No,Solar-system,Non-Living,Rare
+Abẹ́rẹ́,Needle,No,Things,Non-Living,Rare
+Agolo,Can,No,Things,Non-Living,Rare
+Àpamọ́wọ́,Purse,No,Things,Non-Living,Not-common
+Àpótí,Box,No,Things,Non-Living,Rare
+Aṣo,clothes,No,Things,Non-Living,Common
+Aṣọ,Clothes,No,Things,Non-Living,Very-common
+Àwòrán,Image,No,Things,Non-Living,Rare
+Àwọ̀tẹ́lẹ̀,singlet,No,Things,Non-Living,Rare
+Bíbélì,Bible,No,Things,Non-Living,Common
+Èbùn,Gift,No,Things,Non-Living,Rare
+Ìgò,Glass Bottle,No,Things,Non-Living,Not-common
+Ìlẹ̀kẹ̀,Bead,No,Things,Non-Living,Rare
+Iná,Fire,No,Things,Non-Living,Common
+Ìpara,Body cream,No,Things,Non-Living,Rare
+Ìṣó,Nail,No,Things,Non-Living,Not-common
+Ìwé,Book,No,Things,Non-Living,Common
+Ọkọ̀,Vehicle,No,Things,Non-Living,Not-common
+Òkúta,Stone,No,Things,Non-Living,Very-common
+Oògùn,Medicine,No,Things,Non-Living,Rare
+Òrùlé,Roof,No,Things,Non-Living,Rare
+Ṣòkòtò,Trouser,No,Things,Non-Living,Common
+Àgbọ̀nrín,Deer,Yes,Wild animal,Living,Not-common
+Àmọ̀tẹ́kùn,Leopard,Yes,Wild animal,Living,Common
+Eerin,Elephant,Yes,Wild animal,Living,Common
+Ìgalà,Deer Stag,Yes,Wild animal,Living,Rare
+Ìkookò,Hyena,Yes,Wild animal,Living,Rare
+Kọ̀lọ̀kọ̀lọ̀,Fox,Yes,Wild animal,Living,Rare
+Ràkúnmí,Camel,Yes,Wild animal,Living,Not-common
+Kìnìún,Lion,Yes,Wild animal,Living,Common
+Ẹkùn,Tiger,Yes,Wild animal,Living,Not-common
+Ẹfọ̀n,Buffalo,Yes,Wild animal,Living,Rare
