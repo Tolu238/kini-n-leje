@@ -1,6 +1,7 @@
 (function () {
-  const LEVEL_TIME_SECONDS = 60;   // Condition 1: time window for the word-count target
+  const LEVEL_TIME_SECONDS = 50;   // Condition 1: time window for the word-count target
   const MIN_CORRECT_WORDS = 15;    // Condition 1: correct answers needed within that window
+  const MAX_WORDS_PER_ROUND = 15;  // Hard cap: round ends once this many words have been answered
   const ACCURACY_THRESHOLD = 0.85; // Condition 2: minimum accuracy across the whole round
   const STAR_THRESHOLDS = [        // checked high-to-low; first match wins
     { min: 1.00, stars: 3 },
@@ -50,10 +51,10 @@
     return a;
   }
 
-  // The round is open-ended (it runs until the clock expires, not after a
-  // fixed word count), so words are drawn from a shuffled queue that gets
-  // reshuffled and extended whenever it runs dry, letting a fast player
-  // cycle through a tier's pool more than once in one round.
+  // The round runs until either the clock expires or MAX_WORDS_PER_ROUND is
+  // reached, so words are drawn from a shuffled queue that gets reshuffled
+  // and extended whenever it runs dry, letting a fast player cycle through
+  // a tier's pool more than once in one round.
   function nextWord() {
     if (state.queue.length === 0) {
       let fresh = shuffle(tierWords[state.tier]);
@@ -124,7 +125,7 @@
   }
 
   function setMouthScale(scale) {
-    mascotMouthEl.style.transform = `translate(-50%, -50%) rotate(15deg) scaleY(${scale})`;
+    mascotMouthEl.style.transform = `translate(-50%, -50%) scaleY(${scale})`;
   }
 
   function animateMouth() {
@@ -249,6 +250,7 @@
 
     setTimeout(() => {
       if (state.ended) return; // the round clock ran out during the feedback pause
+      if (state.answeredTotal >= MAX_WORDS_PER_ROUND) { endLevel(); return; }
       renderRound();
     }, 900);
   }

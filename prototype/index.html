@@ -31,9 +31,10 @@
   <section id="view-game" class="view hidden">
     <div class="phone-frame">
       <div class="hud">
-        <div class="wood-badge">
+        <div class="wood-badge" title="Reach 15 correct words within 50 seconds">
           <div class="ribbon">WORDS</div>
           <div class="badge-body"><span id="hud-words" class="words-val">0<small>/15</small></span></div>
+          <span id="pace-icon" class="pace-icon">✘</span>
         </div>
         <div class="mascot" id="mascot">
           <img class="mascot-face" src="images/mascot_griot.png" alt="Griot mascot" draggable="false">
@@ -46,17 +47,13 @@
       </div>
 
       <div id="card" class="card">
-        <div class="clock" id="clock"><span id="hud-timer" class="hud-value">60</span></div>
+        <div class="clock" id="clock"><span id="hud-timer" class="hud-value">50</span></div>
         <div class="card-word" id="card-word">Pépéyẹ</div>
         <div class="card-reveal hidden" id="card-reveal">
           <div class="card-english" id="card-english">Duck</div>
           <img class="card-image" id="card-image" alt="" draggable="false">
         </div>
         <div id="feedback" class="feedback hidden"></div>
-      </div>
-
-      <div class="pace-indicator" title="Reach 15 correct words within 60 seconds">
-        <span id="pace-icon" class="pace-icon">✘</span>
       </div>
 
       <div class="answer-row">
