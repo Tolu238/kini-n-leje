@@ -1,7 +1,12 @@
 (function () {
-  const QUESTION_SECONDS = 8;
-  const PASS_THRESHOLD = 0.8;
-  const WORDS_PER_ROUND = 12;
+  const LEVEL_TIME_SECONDS = 60;   // Condition 1: time window for the word-count target
+  const MIN_CORRECT_WORDS = 15;    // Condition 1: correct answers needed within that window
+  const ACCURACY_THRESHOLD = 0.85; // Condition 2: minimum accuracy across the whole round
+  const STAR_THRESHOLDS = [        // checked high-to-low; first match wins
+    { min: 1.00, stars: 3 },
+    { min: 0.90, stars: 2 },
+    { min: 0.85, stars: 1 },
+  ];
   const TIERS = ['Very-common', 'Common', 'Not-common', 'Rare'];
 
   const views = {
@@ -45,42 +50,38 @@
     return a;
   }
 
-  // Pick WORDS_PER_ROUND words from a tier with a roughly even hasBlood yes/no
-  // split (adjusted when a tier is short on one side) and natural category
-  // spread (each tier covers 10+ categories, so a random draw mixes them).
-  function pickRoundWords(tier) {
-    const pool = tierWords[tier];
-    const target = Math.min(WORDS_PER_ROUND, pool.length);
-    const yes = shuffle(pool.filter(w => w.hasBlood));
-    const no = shuffle(pool.filter(w => !w.hasBlood));
-    const half = Math.ceil(target / 2);
-
-    let takeYes = Math.min(half, yes.length);
-    let takeNo = Math.min(target - takeYes, no.length);
-    if (takeYes + takeNo < target) {
-      takeYes = Math.min(target - takeNo, yes.length);
+  // The round is open-ended (it runs until the clock expires, not after a
+  // fixed word count), so words are drawn from a shuffled queue that gets
+  // reshuffled and extended whenever it runs dry, letting a fast player
+  // cycle through a tier's pool more than once in one round.
+  function nextWord() {
+    if (state.queue.length === 0) {
+      let fresh = shuffle(tierWords[state.tier]);
+      if (state.lastWord && fresh.length > 1 && fresh[0] === state.lastWord) {
+        [fresh[0], fresh[1]] = [fresh[1], fresh[0]];
+      }
+      state.queue = fresh;
     }
-
-    return shuffle(yes.slice(0, takeYes).concat(no.slice(0, takeNo)));
-  }
-
-  // Every round shows one word: its Yoruba name, English name and picture always
-  // come from the same WORD_DATA entry, so they can never be mismatched. The
-  // question is whether that thing has blood ("Léje léje") or not ("Iró nlá").
-  function buildRounds(tier) {
-    return pickRoundWords(tier).map(word => ({ word, isTrue: word.hasBlood }));
+    const word = state.queue.shift();
+    state.lastWord = word;
+    return word;
   }
 
   function startLevel(tier) {
     state = {
       tier,
-      rounds: buildRounds(tier),
-      index: 0,
+      queue: shuffle(tierWords[tier]),
+      lastWord: null,
+      current: null,
       correct: 0,
-      wrong: 0,
+      answeredTotal: 0,
+      timeLeft: LEVEL_TIME_SECONDS,
       answered: false,
+      ended: false,
     };
     showView('game');
+    updateLiveHud();
+    startRoundClock();
     renderRound();
   }
 
@@ -90,14 +91,14 @@
   const cardEnglishEl = document.getElementById('card-english');
   const cardEl = document.getElementById('card');
   const hudWords = document.getElementById('hud-words');
-  const hudScore = document.getElementById('hud-score');
-  const hudWrong = document.getElementById('hud-wrong');
+  const hudScorePct = document.getElementById('hud-score-pct');
   const clockEl = document.getElementById('clock');
   const hudTimer = document.getElementById('hud-timer');
   const feedbackEl = document.getElementById('feedback');
   const btnTrue = document.getElementById('btn-true');
   const btnFalse = document.getElementById('btn-false');
   const mascotMouthEl = document.getElementById('mascot-mouth');
+  const paceIconEl = document.getElementById('pace-icon');
 
   // Pronunciation playback: one shared Audio element, source swapped per round.
   const roundAudio = new Audio();
@@ -150,7 +151,7 @@
 
   const mascotEl = document.getElementById('mascot');
   mascotEl.addEventListener('click', () => {
-    if (state && state.rounds[state.index].word.audio) playRoundAudio();
+    if (state && state.current && state.current.word.audio) playRoundAudio();
   });
   mascotEl.style.cursor = 'pointer';
 
@@ -165,45 +166,59 @@
 
   function pad(n) { return n < 10 ? '0' + n : '' + n; }
 
+  // Repurposed HUD badges live-track the two pass conditions: WORDS shows
+  // progress toward the "correct within time" target, SCORE shows running
+  // accuracy. The pace icon below the card mirrors condition 1 as a tick/cross.
+  function updateLiveHud() {
+    hudWords.innerHTML = `${state.correct}<small>/${MIN_CORRECT_WORDS}</small>`;
+    const pct = state.answeredTotal > 0 ? Math.round((state.correct / state.answeredTotal) * 100) : 0;
+    hudScorePct.innerHTML = `${pct}<small>%</small>`;
+
+    const paceMet = state.correct >= MIN_CORRECT_WORDS;
+    paceIconEl.textContent = paceMet ? '✔' : '✘';
+    paceIconEl.classList.toggle('met', paceMet);
+  }
+
+  function startRoundClock() {
+    clearInterval(timerInterval);
+    updateClockDisplay();
+    timerInterval = setInterval(() => {
+      state.timeLeft -= 1;
+      updateClockDisplay();
+      if (state.timeLeft <= 0) {
+        clearInterval(timerInterval);
+        endLevel();
+      }
+    }, 1000);
+  }
+
+  function updateClockDisplay() {
+    hudTimer.textContent = pad(Math.max(state.timeLeft, 0));
+    clockEl.classList.toggle('urgent', state.timeLeft > 0 && state.timeLeft <= 10);
+  }
+
   function renderRound() {
-    const round = state.rounds[state.index];
+    const word = nextWord();
+    state.current = { word, isTrue: word.hasBlood };
     state.answered = false;
     cardRevealEl.classList.add('hidden');
     cardEl.classList.remove('revealed');
     btnTrue.classList.remove('selected');
     btnFalse.classList.remove('selected');
-    clockEl.classList.remove('urgent');
-    cardWordEl.textContent = round.word.yoruba;
-    cardImageEl.alt = round.word.english;
-    cardImageEl.src = round.word.image;
-    cardEnglishEl.textContent = round.word.english;
+    cardWordEl.textContent = word.yoruba;
+    cardImageEl.alt = word.english;
+    cardImageEl.src = word.image;
+    cardEnglishEl.textContent = word.english;
 
     roundAudio.pause();
     stopMouthAnimation();
-    if (round.word.audio) {
-      roundAudio.src = round.word.audio;
+    if (word.audio) {
+      roundAudio.src = word.audio;
       playRoundAudio(); // plays automatically alongside the Yoruba word; mascot's mouth animates with it
     }
     feedbackEl.classList.add('hidden');
     btnTrue.disabled = false;
     btnFalse.disabled = false;
-
-    hudWords.innerHTML = `${state.index + 1}<small>/${pad(state.rounds.length)}</small>`;
-    hudScore.textContent = pad(state.correct);
-    hudWrong.textContent = pad(state.wrong);
-
-    let timeLeft = QUESTION_SECONDS;
-    hudTimer.textContent = pad(timeLeft);
-    clearInterval(timerInterval);
-    timerInterval = setInterval(() => {
-      timeLeft -= 1;
-      hudTimer.textContent = pad(Math.max(timeLeft, 0));
-      clockEl.classList.toggle('urgent', timeLeft <= 3);
-      if (timeLeft <= 0) {
-        clearInterval(timerInterval);
-        if (!state.answered) answer(null);
-      }
-    }, 1000);
   }
 
   function revealCard() {
@@ -216,52 +231,89 @@
   });
 
   function answer(playerSaysTrue) {
-    if (state.answered) return;
+    if (state.answered || state.ended) return;
     state.answered = true;
-    clearInterval(timerInterval);
     revealCard();
     btnTrue.disabled = true;
     btnFalse.disabled = true;
 
-    const round = state.rounds[state.index];
-    const isCorrect = playerSaysTrue === round.isTrue;
-    if (isCorrect) state.correct += 1; else state.wrong += 1;
+    const isCorrect = playerSaysTrue === state.current.isTrue;
+    state.answeredTotal += 1;
+    if (isCorrect) state.correct += 1;
     if (playerSaysTrue === true) btnTrue.classList.add('selected');
     if (playerSaysTrue === false) btnFalse.classList.add('selected');
-    hudScore.textContent = pad(state.correct);
-    hudWrong.textContent = pad(state.wrong);
+    updateLiveHud();
 
     feedbackEl.textContent = isCorrect ? '✔' : '✘';
     feedbackEl.className = 'feedback ' + (isCorrect ? 'correct' : 'wrong');
 
     setTimeout(() => {
-      state.index += 1;
-      if (state.index >= state.rounds.length) {
-        finishLevel();
-      } else {
-        renderRound();
-      }
+      if (state.ended) return; // the round clock ran out during the feedback pause
+      renderRound();
     }, 900);
   }
 
   btnTrue.addEventListener('click', () => answer(true));
   btnFalse.addEventListener('click', () => answer(false));
 
+  // The round clock can expire while a word is on screen but unanswered;
+  // that word is discarded (not counted) rather than scored either way.
+  function endLevel() {
+    if (state.ended) return;
+    state.ended = true;
+    clearInterval(timerInterval);
+    roundAudio.pause();
+    stopMouthAnimation();
+    btnTrue.disabled = true;
+    btnFalse.disabled = true;
+    if (!state.answered && state.current) revealCard();
+    finishLevel();
+  }
+
+  function starsForAccuracy(accuracy) {
+    for (const tier of STAR_THRESHOLDS) {
+      if (accuracy >= tier.min) return tier.stars;
+    }
+    return 0;
+  }
+
   const resultTitleEl = document.getElementById('result-title');
   const resultPctEl = document.getElementById('result-pct');
   const resultSubEl = document.getElementById('result-sub');
+  const resultStarsEl = document.getElementById('result-stars');
+  const condWordsEl = document.getElementById('cond-words');
+  const condAccuracyEl = document.getElementById('cond-accuracy');
   const resultNextQuestionEl = document.getElementById('result-next-question');
   const btnNextLevel = document.getElementById('btn-next-level');
 
+  function setConditionRow(el, met, label) {
+    el.classList.toggle('met', met);
+    el.classList.toggle('unmet', !met);
+    el.querySelector('.condition-icon').textContent = met ? '✔' : '✘';
+    el.querySelector('.condition-label').textContent = label;
+  }
+
   function finishLevel() {
-    const total = state.rounds.length;
-    const pct = Math.round((state.correct / total) * 100);
-    const passed = (state.correct / total) >= PASS_THRESHOLD;
+    const total = state.answeredTotal;
+    const accuracy = total > 0 ? state.correct / total : 0;
+    const pct = Math.round(accuracy * 100);
+    const cond1 = state.correct >= MIN_CORRECT_WORDS;
+    const cond2 = accuracy >= ACCURACY_THRESHOLD;
+    const passed = cond1 && cond2;
+    const stars = passed ? starsForAccuracy(accuracy) : 0;
     const nextTier = TIERS[TIERS.indexOf(state.tier) + 1];
 
-    resultSubEl.textContent = `Score: ${state.correct}/${total} — ${state.tier}`;
+    resultSubEl.textContent = state.tier;
     resultPctEl.textContent = pct + '%';
     views.result.classList.toggle('fail', !passed);
+
+    setConditionRow(condWordsEl, cond1, `${state.correct}/${MIN_CORRECT_WORDS} words in ${LEVEL_TIME_SECONDS}s`);
+    setConditionRow(condAccuracyEl, cond2, `${pct}% accuracy (need ${Math.round(ACCURACY_THRESHOLD * 100)}%)`);
+
+    resultStarsEl.classList.toggle('hidden', !passed);
+    resultStarsEl.querySelectorAll('.star').forEach((starEl, i) => {
+      starEl.classList.toggle('filled', i < stars);
+    });
 
     if (passed && nextTier) {
       resultTitleEl.textContent = 'Congratulations!';

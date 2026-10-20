@@ -33,7 +33,7 @@
       <div class="hud">
         <div class="wood-badge">
           <div class="ribbon">WORDS</div>
-          <div class="badge-body"><span id="hud-words" class="words-val">0<small>/00</small></span></div>
+          <div class="badge-body"><span id="hud-words" class="words-val">0<small>/15</small></span></div>
         </div>
         <div class="mascot" id="mascot">
           <img class="mascot-face" src="images/mascot_griot.png" alt="Griot mascot" draggable="false">
@@ -41,21 +41,22 @@
         </div>
         <div class="wood-badge">
           <div class="ribbon">SCORE</div>
-          <div class="badge-body">
-            <div class="score-pill ok"><span class="dot">✔</span><span id="hud-score">00</span></div>
-            <div class="score-pill bad"><span class="dot">✘</span><span id="hud-wrong">00</span></div>
-          </div>
+          <div class="badge-body"><span id="hud-score-pct" class="words-val">0<small>%</small></span></div>
         </div>
       </div>
 
       <div id="card" class="card">
-        <div class="clock" id="clock"><span id="hud-timer" class="hud-value">08</span></div>
+        <div class="clock" id="clock"><span id="hud-timer" class="hud-value">60</span></div>
         <div class="card-word" id="card-word">Pépéyẹ</div>
         <div class="card-reveal hidden" id="card-reveal">
           <div class="card-english" id="card-english">Duck</div>
           <img class="card-image" id="card-image" alt="" draggable="false">
         </div>
         <div id="feedback" class="feedback hidden"></div>
+      </div>
+
+      <div class="pace-indicator" title="Reach 15 correct words within 60 seconds">
+        <span id="pace-icon" class="pace-icon">✘</span>
       </div>
 
       <div class="answer-row">
@@ -72,7 +73,22 @@
       <div class="result-score">
         <span id="result-pct">100%</span>
       </div>
-      <p id="result-sub" class="result-sub">Score: 10/10</p>
+      <div class="result-stars hidden" id="result-stars">
+        <span class="star">★</span>
+        <span class="star">★</span>
+        <span class="star">★</span>
+      </div>
+      <div class="result-conditions">
+        <div class="condition-row" id="cond-words">
+          <span class="condition-icon">✘</span>
+          <span class="condition-label">0/15 words in 60s</span>
+        </div>
+        <div class="condition-row" id="cond-accuracy">
+          <span class="condition-icon">✘</span>
+          <span class="condition-label">0% accuracy (need 85%)</span>
+        </div>
+      </div>
+      <p id="result-sub" class="result-sub">Very-common</p>
       <p id="result-next-question" class="result-next-question hidden">Move to the next level?</p>
       <div class="result-actions">
         <button id="btn-next-level" class="pill-btn next-level-btn hidden">Yes, Next Level ▸</button>
